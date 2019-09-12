@@ -1,0 +1,16 @@
+{
+  "name": "splitter-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "split": "fable-splitter --help",
+    "test": "fable-splitter src/MyTest/MyTest.fsproj -w --run -o dist/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fable-compiler": "^2.3.20",
+    "fable-splitter": "^2.1.10"
+  }
+}
