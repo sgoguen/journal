@@ -15,7 +15,7 @@ module Term =
         | 0 -> Var(n)
         | 1 -> Lam((fromInt n))
         | 2 -> App((fromInt x), (fromInt y))
-
+        | _ -> failwith "This shouldn't happen"
 
 
     //  How many lambdas do we need to add to make sure all terms are bound?
@@ -31,6 +31,12 @@ module Term =
         | Lam(Depth(d)) -> d + 1
         | App(Depth(x), Depth(y)) -> max x y
     and depth (Depth(d)) = d
+
+    let rec (|Count|) = function
+        | Var(n) -> 1
+        | Lam(Count(b)) -> b 
+        | App(Count(x), Count(y)) -> x + y
+    and count (Count(c)) = c
 
     //  This function turns a partial term into a lambda, making sure all the variables
     //  are bound to something
@@ -61,9 +67,6 @@ module Term =
 
 
     let toString (startChar: char) =
-        
-        
-
         let rec render (offset:int) (b:Term) =
             let (|Char|) n = (startChar + char (n)), n
             let (|VarC|_|) = function | Var(Char(c, _)) -> Some(c) | _ -> None
