@@ -100,7 +100,7 @@ let zeroOrMore (Parser p) =
 /// Parse one or more repetitions using the specified parser
 let oneOrMore p = (p <*> (zeroOrMore p)) |> map (fun (c, cs) -> c :: cs)
 
-/// Parses one or more space characters 
+/// Parses one or more space characters
 let anySpace = zeroOrMore (pred (fun t -> t = ' '))
 
 let char tok = pred (fun t -> t = tok)
@@ -122,11 +122,11 @@ let run (Parser(f)) input =
     | Some((i, _), res) when i = Seq.length input -> Some res
     | _ -> None
 
-let listToString (chars:char list) = String.concat "" [for c in chars -> c.ToString()]
+let listToString (chars: char list) = String.concat "" [ for c in chars -> c.ToString() ]
 let (|String|) = listToString
 
-let test (Parser(f)) (input:string) =
+let test (Parser(f)) (input: string) =
     match f (0, List.ofSeq (input.ToCharArray())) with
-    | Some((i, String(remainder)), res) -> Some(res, remainder) 
+    | Some((i, String(remainder)), res) -> Some(res, remainder)
     | _ -> None
     |> printfn "%A"
