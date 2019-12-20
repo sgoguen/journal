@@ -23,13 +23,22 @@ let brack =
 let term = 
     var <|> brack
 let apply = 
-    term <<*> anySpace <*> separated anySpace term |> map (fun (first, rest) -> applyAll first rest) 
-    |> map id 
-    |> map id |> map id |> map id |> map id |> map id |> map id |> map id
-let lamb = char '\\' <*>> letter <<*> char '.' <*> term |> map Lambda
-let exprAux = apply <|> term <|> lamb
+    term <<*> anySpace <*> separated anySpace term 
+    |> map (fun (first, rest) -> applyAll first rest) 
+let lamb = char '\\' <*>> letter <<*> char '.' <*> expr |> map Lambda
+let exprAux = lamb <|> apply <|> term
 
 exprSetter.Set exprAux
 
 module Tests =
-    let t1 = test exprAux "\\x.(x (y z))"
+    let test = test expr
+    test "x"
+    test "x y"
+    test "a b c d e"
+    test "a b (c d) e"
+    test "\\x.x"
+    test "\\x.x y"
+    test "\\x.a b c d e"
+    test "\\x.a b (c d) e"
+    test "\\x.a b (\\c.c d) e"
+    test "\\x.(x (y z))"
