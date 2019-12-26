@@ -7,6 +7,38 @@ open Microsoft.FSharp.Quotations.Patterns
 open Cantor
 open Debruijn
 
+module Basics = 
+    let PAIR = fun a b -> fun p -> p a b ;
+    let FIRST = fun p -> p (fun x y -> x)
+    let SECOND = fun p -> p (fun x y -> y)
+
+    // -- The constant function
+
+    let K = fun x y -> x ;
+
+    let TRUE = fun x y -> x
+    let FALSE = fun x y -> y
+    
+    let IF = fun x -> x
+    let AND = fun x y -> IF x y FALSE
+    let OR = fun x y -> IF x TRUE y
+    let NOT = fun x -> IF x FALSE TRUE
+
+    // let FIX = fun f -> (fun x -> f (x x)) (fun x -> f (x x))
+    let NIL = fun x f -> x
+    let CONS = fun g r -> fun x f -> f g r
+
+    // let HEAD = fun l -> l error (fun a b -> a)
+    // let TAIL = fun l -> l error (fun a b -> b)
+
+    let MATCH = fun l x f -> l x f
+
+// let MAP = fix (^map f l . match l nil (^x xs. cons (f x) (map f xs))) ;
+
+// let FOLD = fix (^fold x f l. match l x (^y ys . f y (fold x f ys))) ;    
+
+
+
 
 module Examples =
     // λx. x
