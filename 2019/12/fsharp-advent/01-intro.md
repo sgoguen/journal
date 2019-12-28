@@ -5,7 +5,7 @@ I'm really excited to be taking part of the [F# Advent Calendar](https://sergeyt
 
 One more thing before I start:  This year the Washington DC F# group is organizing the [**Capitol F#**](https://www.capitolfsharp.org/) conference this year and I want to put a reminder out that we are still accepting a [call for speakers](https://sessionize.com/capitol-fsharp) up to December 31st.
 
-## I Just Love to Pattern Match - It's my Favorite
+## I Just Love to Pattern Match - Pattern matching is my favorite!
 
 Pattern matching is one of my favorite F# features hands down.  I always knew I liked them, but after seeing [Paul Blasucci's talk](https://github.com/pblasucci/DeepDive_ActivePatterns), I fell in love with them
 
