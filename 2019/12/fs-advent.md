@@ -130,14 +130,9 @@ let rec toFSharp = function
 
 
 and addParens isLeft = function
-    //  We won't add parenthesis around variables
     | Var(v1)                 -> v1
-    //  Lambdas always need to be wrapped in parens no matter if it's the function
-    //  being called or if it's the argument being passed.
     | Lambda(_) as l          -> sprintf "(%s)" (toFSharp l)
-    //  Functions are left-associative, so we don't need to add parenthesis here
     | App(_) as a when isLeft -> sprintf "%s" (toFSharp a)
-    //  Applications on the right always need to be wrapped in parenthesis.
     | App(_) as a             -> sprintf "(%s)" (toFSharp a)
 
 
@@ -158,7 +153,6 @@ App(App(ZERO, Var("b")), Var("c")) |> toFSharp |> printfn "%s"
 //  Prints "(fun f x -> x) b c"
 
 App(App(ZERO, Var("b")), ZERO) |> toFSharp |> printfn "%s"
-
 ```
 
 # Active Patterns

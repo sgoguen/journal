@@ -17,9 +17,10 @@
     <Compile Include="fsAdvent/07-quotations.fs" />
     <Compile Include="fsAdvent/08-converting-ints-to-lambdas.fs" />
     <Compile Include="fsAdvent/09-lambda-arithmetic.fs" />
-    <!-- <Compile Include="Syntax.fs" /> -->
-    <Compile Include="Cantor.fs" />
-    <Compile Include="Debruijn.fs" />
+    <Compile Include="Parsers/Parsec.fs" />
+    <Compile Include="Parsers/Lambda.fs" />
+    <Compile Include="Lambda/Cantor.fs" />
+    <Compile Include="Lambda/Debruijn.fs" />
     <Compile Include="Tests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
