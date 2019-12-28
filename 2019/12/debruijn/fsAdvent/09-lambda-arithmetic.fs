@@ -1,10 +1,57 @@
-module Advent.S09
+module rec Advent.S09
 
+open Xunit
 open Advent.AST
 open Advent.Formatter
 open Advent.NumberEncoder
 
 module P = Microsoft.FSharp.Quotations.Patterns
+
+(* 
+
+Let's update our fromExpr function so we can encode integers and addition as pure lambda functions.
+
+What I want to do is to define a couple of variables, do some basic arthematic and encode it in pure
+lambda calculus.
+
+Here's my test below:
+
+*)
+
+[<Fact>]
+let ``Lambda Formatting``() =
+    //  Let's convert everything inside our quotation  ( <@ @> )
+    let lambdaCode = fsharpToLambda <@  let var1 = 1
+                                        let var2 = 2
+                                        let sum = var1 + var2
+                                        sum
+                                     @>
+    //  This is what it should turn it.
+    let expectedOutput = "((λ.var1 -> ((λ.var2 -> ((λ.sum -> sum) (((λ.m n f x -> ((m f) ((n f) x))) var1) var2))) (λ.f x -> (f (f x))))) (λ.f x -> (f x)))"
+    Assert.StrictEqual(expectedOutput, lambdaCode)
+
+(* 
+Ok.  First thing's first, we need to update our function that converts F# into lambda calculus.
+ *)
+
+let rec (|LTerm|) = function
+    //  We'll carry these rules over from our previous module
+    | P.Var(v)                              -> Var(v.Name)
+    | P.Lambda(var, LTerm(expr))            -> Lambda(var.Name, expr)
+    | P.Application(LTerm(ex1), LTerm(ex2)) -> App(ex1, ex2)
+    //  Next, when we come across an integer, let's use our Church encoder to turn it into a lambda function.
+    | QInt(n)                               -> numToLambda n
+    //  When we come across an addition operation, let's use a lambda definition of addition (PLUS)
+    | QAdd(LTerm(left), LTerm(right))       -> App(App(PLUS, left), right)
+    //  For let statements, 
+    | P.Let(var, LTerm(expr), LTerm(body))  -> App(Lambda(var.Name, body), expr)
+    | x -> failwithf "Don't know how to deal with %A" x
+
+// In order to make the above function work, we need a few helpers:
+
+let fromExpr = (|LTerm|)
+
+let fsharpToLambda x = x |> fromExpr |> toLambda
 
 //  We're going to need to extract integer literals.
 let (|QInt|_|) = function
@@ -29,27 +76,11 @@ let PLUS = Lambda("m",
             )
            )
 
-let rec fromExpr = function
-    | P.Var(v)                              -> Term.Var(v.Name)
-    | P.Lambda(var, LTerm(expr))            -> Term.Lambda(var.Name, expr)
-    | P.Let(var, LTerm(expr), LTerm(body))  -> Term.App(Lambda(var.Name, expr), body)
-    | P.Application(LTerm(ex1), LTerm(ex2)) -> Term.App(ex1, ex2)
-    | QInt(n)                               -> numToLambda n
-    | QAdd(LTerm(left), LTerm(right))       -> App(App(PLUS, left), right)
-    | x -> failwithf "Don't know how to deal with %A" x
-
-and (|LTerm|) = fromExpr
 
 
 let rec (|FLambda|) = function
-    //  Here we use our new pattern
-    | Lambdas(parameters, FLambda(body)) -> sprintf "(λ %s -> %s)" (String.concat " " parameters) body
+    | Lambdas(parameters, FLambda(body)) -> sprintf "(λ.%s -> %s)" (String.concat " " parameters) body
     | App(FLambda(func), FLambda(arg))    -> sprintf "(%s %s)" func arg
     | Var(name)                         -> name
 and toLambda = (|FLambda|)
 
-fromExpr <@  let var1 = 1
-             let var2 = 2
-             let sum = var1 + var2
-             sum
-          @> |> toLambda |> printfn "%A"
