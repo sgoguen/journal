@@ -36,7 +36,7 @@ let howDoTheseAddUp = function // int * int -> string
   | Sum(n) -> sprintf "Your sum is: %i" n
 ```
 
-They have a different syntax because they're used in very different circumstance.
+They have a different syntax because they're used in very different circumstances.
 
 One more thing, if you ever have a function you want to turn into an active pattern, you can simply assign it like so:
 
@@ -61,9 +61,9 @@ Here it is in all it's glory!
 
 ```fsharp
 let rec (|FSharp|) = function // Term -> string
-    | Var(name)                            -> name
-    | Lambda(paramName, FSharp(body))      -> sprintf "(fun %s -> %s)" paramName body
-    | App(FSharp(func), FSharp(arg))       -> sprintf "(%s %s)" func arg
+    | Var(name)                       -> name
+    | Lambda(paramName, FSharp(body)) -> sprintf "(fun %s -> %s)" paramName body
+    | App(FSharp(func), FSharp(arg))  -> sprintf "(%s %s)" func arg
 ```
 
 Take a good look at it and compare it to our original function.  Here's the original:
