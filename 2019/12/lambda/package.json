@@ -1,0 +1,22 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:watch": "fable-splitter src -o dist/tests -w --commonjs",
+    "pretest": "fable-splitter src -o dist/tests --commonjs",
+    "test": "mocha dist/tests",
+    "test:watch": "mocha -w dist/tests",
+    "mocha": "mocha --help"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fable-compiler": "^2.4.12",
+    "fable-splitter": "^2.1.11"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.2"
+  }
+}
