@@ -40,3 +40,5 @@ let rec (|FSharp|) = function
     | Lambda(paramName, FSharp(body))      -> sprintf "(fun %s -> %s)" paramName body
     | App(FSharp(func), FSharp(arg))       -> sprintf "(%s %s)" func arg
 ```
+
+[Next - Partial Active Patterns](06-partial-active-patterns.md)
