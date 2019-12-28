@@ -1,8 +1,8 @@
 module Advent.S09
 
 open Advent.AST
-open Advent.S06
-open Advent.S08
+open Advent.Formatter
+open Advent.NumberEncoder
 
 module P = Microsoft.FSharp.Quotations.Patterns
 

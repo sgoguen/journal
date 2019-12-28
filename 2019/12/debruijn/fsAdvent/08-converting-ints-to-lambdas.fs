@@ -1,7 +1,7 @@
-module Advent.S08
+module Advent.NumberEncoder
 
 open Advent.AST
-open Advent.S04
+open Advent.Formatter
 
 
 (*

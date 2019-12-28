@@ -1,4 +1,4 @@
-module Advent.S06
+module Advent.Formatter
 
 open System
 open Advent.AST

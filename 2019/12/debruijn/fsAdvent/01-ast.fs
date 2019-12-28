@@ -1,5 +1,4 @@
 module Advent.AST
-open System
 
 (*
 
