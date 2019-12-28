@@ -1,5 +1,12 @@
 module Syntax
 
+let (|Sum|) (x, y) = x + y
+
+let howDoTheseAddUp = function
+  | Sum(0) -> "Your numbers don't add up to nothing"
+  | Sum(1) -> "You only have that one thing?"
+  | Sum(n) -> sprintf "I give you: %i" n
+
 (** Abstract syntax of internal expressions. *)
 
 (** Abstract syntax of expressions, where de Bruijn indices are used to represent

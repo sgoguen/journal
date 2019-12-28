@@ -53,3 +53,4 @@ to our simple lambda calculus.  For anything else, we throw an error.
 let ID = fromExpr <@ fun x f -> f x @>
 
 printfn "%A" ID
+// Lambda("x", Lambda("f", App( Var("f"), Var("x"))))

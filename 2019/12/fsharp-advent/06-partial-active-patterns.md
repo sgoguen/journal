@@ -1,40 +1,44 @@
 # Partial Active Patterns
 
-Active Patterns do more than allow us to format code differently, they can let us create more
-complicated patterns that are based on more complicated tests.
+Partial active patterns are active patterns created with partial functions.  In other words, these are functions that are underdefine for some input.  Let me give you can example.
 
-Here we're going to create something called a partial active pattern.  It's called partial 
-because you create partial active patterns with partial functions.  When we want to create a
-partial function in F#, we always use the option type.
-
-Here's a simpler partial active pattern that parses a string into an integer.  
-
+Here's a function that tries to parse an integer:
 
 ```fsharp
 let tryToParseInt (input:string) = 
     let (ok, value) = Int32.TryParse(input)
     if ok then Some(value) else None
+```
 
-//  We can turn it into an partial active pattern like we did before with our banana clips.
-//  BUT!  But active patterns require us to add some additional characters in the name to
-//  indicate this is an partial functions.  NOTE the "|_|" in the name.
+I say tries because sometimes you can't.  If I feed this function 'aabbcc', it will return `None`.  Likewise, when I feed it "123", `tryToParseInt` will return `Some(123)`
 
-//  This is *NOT* how to define a partial active pattern, we're missing |_| in the name.
-let (|Int|) = tryToParseInt
+These types of functions are the building blocks for partial active patterns.
 
-//  This is how to define a partial active pattern.
-//  Also, all partial active patterns require your function returns an option type.
+Like before, we can turn it into an partial active pattern like we did before with our banana clips.
+
+**HOWEVER**!  To make it a partial active patterns, we have to add some additional characters to the end of the name to tell the F# compile it's partial.
+
+```fsharp
 let (|Int|_|) = tryToParseInt
 ```
 
+Notice the |_|.  This is important.
+
+You don't want to forget it an accidentally write it like so:
+```fsharp
+let (|Int|) = tryToParseInt
+```
+
+## Detecting Nested Lambdas
 
 Back to our printer.  I want to detect nested lambda functions.  Here's an example:
 
     S = λx.λy.λz.((xz)(yz))
 
-When I come across nested lambdas like this, I want to extract:
+When I come across nested lambdas like this, I want to extract the following information:
 
 1. The list of all the parameters:    ["x"; "y"; "z"]
+    * Because all we're going to do is combine it into one string.
 2. The body of the inner most lambda: (x y)(y z) 
 
 Here's how we do it with a recursive partial active pattern:
@@ -50,28 +54,53 @@ let rec (|Lambdas|_|) = function
     | term                                      -> None
 ```
 
-Let's break this function down:
+Let's break this function down.  We do three checks:
 
-1.  The first test checks to see if our term is a lambda.  Not only that,
-    it also checks if the body is made up of a sequences of lambdas (One or more)
-    When it does, we're going to return a list of strings for all of the parameter
-    names and the body of the inner most lambda.
-2.  The first test only matches when there are two or more lambdas.  We need this 
-    test to match our base case (the inner most lambda).
+1.  Right off the bat, we try to see if we have a lambda with nested lambas.
+    * This means we're recursing right away.
+    * If the body is one or more lambdas, it gives us the list of parameters and the inner-most lambda body that is not a lambda function.
+    * On the right side of the arrow, we return a new list of parameters with the outermost parameter `p1` at the head of the list.  We also return the inner most body.
+2.  We need the second check to catch our first lambas.
+    * If we've gotten here, it's because its body is not a lambda function.
+    * Knowing that, we simply return a list with our single parameter name and body.
+3.  Finally, we need to know what to do if the term isn't even a lambda.
+    * If we're looking at an `App` or `Var` we need to bail.
+    * We indicate we didn't match by returning `None`.
+
+
+## Trying it out!
+
+Let's take our fancy new active pattern for a spin with our formatter.
 
 ```fsharp
-//  Let's try it out:
 let rec (|FSharp|) = function
     //  Here we use our new pattern
-    | Lambdas(parameters, FSharp(body)) -> sprintf "(fun %s -> %s)" (String.concat " " parameters) body
+    | Lambdas(parameters, FSharp(body)) -> sprintf "fun %s -> %s" (String.concat " " parameters) body
     | App(FSharp(func), FSharp(arg))    -> sprintf "(%s %s)" func arg
     | Var(name)                         -> name
-
-
-
-let toFSharp = (|FSharp|)
-
-Lambda("a", Lambda("b", Lambda("c", Var("c")))) |> toFSharp |> printfn "%s"
 ```
 
-[Next - Quotations](07-quotations.md)
+Let's add this, so we can call it like a regular function.
+```fsharp
+let toFSharp = (|FSharp|)
+```
+
+And give it a test
+
+```fsharp
+let ex1 = Lambda("a", Lambda("b", Lambda("c", Var("c"))))
+
+ex |> toFSharp |> printfn "%s"
+```
+
+Our new formatted should now print.
+
+```fsharp
+fun a b c -> c
+```
+
+As slick as that is, we're going to embark on something even slicker.  We're going to use F# and active patterns to turn F# code into lambda calculus.
+
+You're not going to want to miss this holiday magic.
+
+[Up Next - Quotations!!! >>>](07-quotations.md)
