@@ -10,7 +10,7 @@ One more thing before I start:  This year the Washington DC F# group is organizi
 Pattern matching is one of my favorite F# features hands down.  I always knew I liked them, but after seeing [Paul Blasucci's talk](https://github.com/pblasucci/DeepDive_ActivePatterns), I fell in love with them
 
 It really is an amazing feature.  It's a Swiss Army knife for manipulating data, especially if that data is encoded 
-with a tree-like data structure.  It slices and dices ASTs, XML, JSON and other tree-like structures like not other.
+with a tree-like data structure.  It slices and dices ASTs, XML, JSON and other tree-like structures like no other.
 
 Because it's the holidays and I like to play with toys, I'm going to show you how we can use pattern matching to play with a toy version of lambda calculus.  We're going to define a very simple lambda calculus AST and use this amazing F# tool to slice, dice and manipulate tree structured data types.
 
@@ -26,11 +26,11 @@ type Term =
 ```
 
 As you can see, there's not a lot there.  Unlike the [F# expression type](https://msdn.microsoft.com/visualfsharpdocs/conceptual/quotations.expr-class-%5bfsharp%5d), 
-we our AST only lets us do three things:
+our AST only lets us do three things:
 
-1. You can define functions.  (Lambda)
-2. You can your functions.  (App)
-3. You can refer to variables. (Var)
+1. Define functions.  (Lambda)
+2. Call functions.  (App)
+3. Refer to variables. (Var)
 
 Now even though this language doesn't have built-in numeric types, if statements, for-loops, 
 tuples or even boolean values built in to it, I can encode those things into lambda calculus itself.
