@@ -34,3 +34,5 @@ App(App(ZERO, Var("b")), Var("c")) |> toFSharp |> printfn "%s"
 
 App(App(ZERO, Var("b")), ZERO) |> toFSharp |> printfn "%s"
 ```
+
+[Next - Active Patterns >>>](05-active-patterns.md)
