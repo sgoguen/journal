@@ -27,3 +27,5 @@ Let's try it out:
 ONE |> toFSharp |> printfn "%s"  
 //  Prints:  (fun f -> (fun x -> (f x)))
 ```
+
+[Next - Pattern Matching >>>](03-pattern-matching.md)
