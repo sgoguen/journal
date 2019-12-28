@@ -46,3 +46,5 @@ tuples or even boolean values built in to it, I can encode those things into lam
 
 Before we get into that, I want to show you how you can use F# to turn pure lambda calculus 
 into F# and how we can turn F# into pure lambda calculus.  
+
+[Next - Formatting with Pattern Matching >>>](02-basic-formatter.md)
