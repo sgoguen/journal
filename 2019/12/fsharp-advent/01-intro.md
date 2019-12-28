@@ -7,12 +7,12 @@ One more thing before I start:  This year the Washington DC F# group is organizi
 
 ## I Just Love to Pattern Match - It's my Favorite
 
-Pattern matching is one of my favorite F# features hands down.
+Pattern matching is one of my favorite F# features hands down.  I always knew I liked them, but after seeing [Paul Blasucci's talk](https://github.com/pblasucci/DeepDive_ActivePatterns), I fell in love with them
 
 It really is an amazing feature.  It's a Swiss Army knife for manipulating data, especially if that data is encoded 
 with a tree-like data structure.  It slices and dices ASTs, XML, JSON and other tree-like structures like not other.
 
-Because it's the holidays and I like to play with toys, I'm going to show you how we can use pattern matching to play with a toy version of lambda calculus.  We're going to define a very simple lambda calculus AST and use the amazing F# tools to slice, dice and manipulate this tree structured data type.
+Because it's the holidays and I like to play with toys, I'm going to show you how we can use pattern matching to play with a toy version of lambda calculus.  We're going to define a very simple lambda calculus AST and use this amazing F# tool to slice, dice and manipulate tree structured data types.
 
 So, let's get started!
 
