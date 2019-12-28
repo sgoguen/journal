@@ -22,3 +22,5 @@ and numBodyToLamda = function
 numToLambda 4 |> toFSharp |> printfn "%s"
 // PRINTS: (fun f x -> (f (f (f (f x)))))
 ```
+
+[Next - Encoding Arithmetic >>>](09-encoding-arithmetic.md)
