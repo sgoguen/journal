@@ -46,3 +46,5 @@ let ID = fromExpr <@ fun x f -> f x @>
 
 printfn "%A" ID
 ```
+
+[Next - Church Encoding](08-church-encoding-integers.md)
