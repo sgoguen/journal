@@ -37,3 +37,5 @@ whether we need parenthesis.
 
 Let's break out the application rule first and take a first stab at dealing with the
 parenthesis.
+
+[Next - Conditional Formatting >>>](04-conditional-formatting.md)
