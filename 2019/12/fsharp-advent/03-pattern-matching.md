@@ -47,19 +47,23 @@ Needless to say, it prints exactly what we want.
 fun f x -> f x
 ```
 
-While this new rule is clearly too specific to this scenario, it highlight the power that pattern matching to decode complicated instances by deconstructing complicated instances into its simpler parts.  
+While this new rule is clearly too specific to this scenario, it highlights the power that pattern matching.  We can decode complicated instances by deconstructing it into simpler parts.  
 
-Imagine how much code you'd have to write in another language to check:
+Imagine how much code you'd have to write in another language to do this check:
 
 * If the outer object is a lambda functions
 * And it's body is a lambda function
-* And that lambda function's body is a function application call consisting of two variable references.
+* And that lambda function's body is a function application 
+* And the left side of that call is a variable.
+* And the right side of that call is a variable.
 
-With pattern matching, we write our tests using the same syntax we use to construct our instances.   When we get a match, our instances' properties are automated extracted and bound to variables so we can use on the right side of the -> arrow.
+It sounds so exhausting.
+
+With pattern matching, we write our tests using the same syntax we use to construct our instances.   When we get a match, our instance's properties are automatically extracted and bound to variables that we can use on the right side of the -> arrow.
 
 How is that not exciting?
 
-As neat as this is, this pattern is too specific so we should generalize it a bit.  
+As neat as this is, this pattern is too specific.  So let's generalize it!  
 After all, what happens when we have three lambdas or 4 lambdas?  Also, maybe we want 
 to separate the logic that groups lambda parameters from the logic that determines
 whether we need parenthesis.
