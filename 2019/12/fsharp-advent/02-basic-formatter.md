@@ -46,6 +46,6 @@ That's not bad for a first pass, but there are more parenthesis than I would pre
 fun f x -> f (f x)
 ```
 
-Let's get a little fancier with pattern matching to pretty it up a bit.
+Let's get a little fancier with pattern matching and make our printer pretty.
 
 [Next - More Complicated Pattern Matching >>>](03-pattern-matching.md)
