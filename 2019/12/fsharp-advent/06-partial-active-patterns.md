@@ -73,3 +73,5 @@ let toFSharp = (|FSharp|)
 
 Lambda("a", Lambda("b", Lambda("c", Var("c")))) |> toFSharp |> printfn "%s"
 ```
+
+[Next - Quotations](07-quotations.md)
