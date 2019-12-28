@@ -6,7 +6,7 @@ open System
 # Fun with Languages and Pattern Matching!
 
 One of my favorite features of F# is pattern matching.  It really is an amazing feature
-Because it's a Swiss Army knife of manipulating data, especially if that data is encoded 
+because it's a Swiss Army knife of manipulating data, especially if that data is encoded 
 with a tree-like data structure.  This means, it's great for manipulating Abstract Syntax 
 Trees, XML and JSON like data-structures and anything that resembles a structured 
 documents.
@@ -35,7 +35,7 @@ let ZERO = Lambda("f", Lambda("x", Var("x")))
 let ONE = Lambda("f", Lambda("x", App(Var("f"), Var("x"))))
 
 // 2 := λf.λx.f (f x)
-let TWO = Lambda("f", Lambda("x", App(Var("f"), Var("x"))))
+let TWO = Lambda("f", Lambda("x", App(Var("f"), App(Var("f"), Var("x")))))
 
 
 (*
@@ -80,14 +80,15 @@ Let's try it out:
 
 *)
 
-TWO |> toFSharp |> printfn "%s"  //  Prints:  (fun f -> (fun x -> (f x)))
+ONE |> toFSharp |> printfn "%s"  
+//  Prints:  (fun f -> (fun x -> (f x)))
 
 (*
 
 That's not bad, but there are a lot of parenthesis and if I was writing this in F#,
 I'd write it a little cleaner like so:
 
-    fun f x -> f x
+    fun f x -> f (f x)
 
 Let's see if pattern matching can help us here.  I'm going to create a rule that will 
 match this exact scenario and format it the way I want, then we'll go from there.
@@ -105,38 +106,58 @@ let rec toFSharp = function
 
 
 //  Let's try it!
-TWO |> toFSharp |> printfn "%s"   //  It now prints "fun f x -> f x"
+ONE |> toFSharp |> printfn "%s"   //  It now prints "fun f x -> f x"
 
 (*
 
-What makes pattern matching powerful is it allows us decode complicated instances  
-deconstructing complicated instances into simpler parts.  Here we're testing to see if
-the instance matches a relatively complicated shape, then we extract all of the relevent
-information from it.  In this case, that means we're getting the names of the parameters
-and the names of the variables.
+What makes pattern matching powerful is it allows us decode complicated instances by 
+deconstructing complicated instances into its simpler parts.  Here we're testing to see if
+the instance matches a relatively complicated shape.  When it matches, the properties are
+automated extracted and bound to variables that we can use on the right side of the -> arrow.
+In this case, that means we're getting the names of the parameters and the names of the variables.
 
-Unfortunately, this pattern is too specific and we need to generalize it.  What happens 
-when we have three lambdas or 4 lambdas?  Also, maybe we want to separate how we format 
-lambda parameters from how we format function application.
+As neat as this is, this pattern is too specific so we should generalize it a bit.  
+After all, what happens when we have three lambdas or 4 lambdas?  Also, maybe we want 
+to separate the logic that groups lambda parameters from the logic that determines
+whether we need parenthesis.
 
-Let's break out the application rule first.
+Let's break out the application rule first and take a first stab at dealing with the
+parenthesis.
 
 *)
 
 let rec toFSharp = function
     | Var(name)                    -> name
     //  When we see two lambdas, let's group them...  (We'll fix this in a bit)
-    | Lambda(p1, Lambda(p2, body)) -> sprintf "(fun %s %s -> %s)" p1 p2 (toFSharp body)
-    | Lambda(paramName, body)      -> sprintf "(fun %s -> %s)" paramName (toFSharp body)
-    //  If we call a function with a variable as the argument, we don't need parenthesis
-    | App(func, Var(v1))           -> sprintf "%s %s" (toFSharp func) v1
-    | App(func, arg)               -> sprintf "(%s %s)" (toFSharp func) (toFSharp arg)
+    | Lambda(p1, Lambda(p2, body)) -> sprintf "fun %s %s -> %s" p1 p2 (toFSharp body)
+    | Lambda(paramName, body)      -> sprintf "fun %s -> %s" paramName (toFSharp body)
+    | App(func, arg)               -> sprintf "%s %s" (addParens true func)  (addParens false arg)
 
-TWO |> toFSharp |> printfn "%s"  
-//  Prints "(fun f x -> f x)"
 
+and addParens isLeft = function
+    | Var(v1)                 -> v1
+    | Lambda(_) as l          -> sprintf "(%s)" (toFSharp l)
+    | App(_) as a when isLeft -> sprintf "%s" (toFSharp a)
+    | App(_) as a             -> sprintf "(%s)" (toFSharp a)
+
+
+//  Ok, let's try it out
+
+ONE |> toFSharp |> printfn "%s"  
+//  Perfect, it still prints "(fun f x -> f x)"
+
+//  Lambda calculus is left-associative, so we shouldn't have parenthesis
 App(App(Var("a"), Var("b")), Var("c")) |> toFSharp |> printfn "%s"
 //  Prints "a b c"
+
+//  Lambda calculus is left-associative, so we shouldn't have parenthesis
+App(Var("a"), App(Var("b"), Var("c"))) |> toFSharp |> printfn "%s"
+//  Prints "a (b c)"
+
+App(App(ZERO, Var("b")), Var("c")) |> toFSharp |> printfn "%s"
+//  Prints "(fun f x -> x) b c"
+
+App(App(ZERO, Var("b")), ZERO) |> toFSharp |> printfn "%s"
 
 (*
 
@@ -177,9 +198,7 @@ active pattern.
 // Notice how we invoke the FSharp pattern on the left side of the ->
 let rec (|FSharp|) = function
     | Var(name)                            -> name
-    | Lambda(p1, Lambda(p2, FSharp(body))) -> sprintf "(fun %s %s -> %s)" p1 p2 body
     | Lambda(paramName, FSharp(body))      -> sprintf "(fun %s -> %s)" paramName body
-    | App(FSharp(func), Var(v1))           -> sprintf "%s %s" func v1
     | App(FSharp(func), FSharp(arg))       -> sprintf "(%s %s)" func arg
 
 
@@ -204,7 +223,7 @@ let tryToParseInt (input:string) =
 //  BUT!  But active patterns require us to add some additional characters in the name to
 //  indicate this is an partial functions.  NOTE the "|_|" in the name.
 
-//  This is NOT how to define a partial active pattern
+//  This is *NOT* how to define a partial active pattern, we're missing |_| in the name.
 let (|Int|) = tryToParseInt
 
 //  This is how to define a partial active pattern.
@@ -252,12 +271,9 @@ Let's break this function down:
 let rec (|FSharp|) = function
     //  Here we use our new pattern
     | Lambdas(parameters, FSharp(body)) -> sprintf "(fun %s -> %s)" (String.concat " " parameters) body
-    //  This will never get caught.  Technically we can comment it out, but the F# compiler
-    //  will generate a warning because it can't be sure we're testing for lambdas.
-    | Lambda(p1, FSharp(body))          -> sprintf "(fun %s -> %s)" p1 body
-    | App(FSharp(func), Var(v1))        -> sprintf "%s %s" func v1
     | App(FSharp(func), FSharp(arg))    -> sprintf "(%s %s)" func arg
     | Var(name)                         -> name
+
 
 
 let toFSharp = (|FSharp|)
@@ -268,104 +284,85 @@ Lambda("a", Lambda("b", Lambda("c", Var("c")))) |> toFSharp |> printfn "%s"
 (*
 
 Let's switch gears a little bit, because I want to show you how we can use quotations to 
-turn F# code into pure lambda calculus.
+turn F# code into pure lambda calculus.  Quotations allow us to access the AST of F# code.
+
+Let me show you:
 
 *)
 
+//  Here I'm wrapping a lambda function in a quotation block: <@  @>
+let add = <@ fun x y -> x + y @>
 
+//  Let's print it:
+printfn "add: %A" add
+//  PRINTS:  add: Lambda (x, Lambda (y, Call (None, op_Addition, [x, y])))
 
 (*
 
+The AST that's printed above, more or less, shows us how F# encodes a function 
+before the compiler turns it into IL code.  In other words, we can see what F#'s 
+parser sees and transform it into what we want.  The Fable compiler uses a form of
+these expressions to turn F# into JavaScript.  
 
-
-Ok.  We took care of the application rule, but we still need to deal with the lambda scenario. 
-
-Now, let's say we want to convert some F# code into our lambda calculus AST.
-
-* Whenever you have some data bundled together in tuples or discriminated unions
-
-I first learned about Lambda calculus a 15 years and I'm still amazed by it for so many
-reasons.
-
-First, Lambda calculus was introduced in the 1930's by Alonzo Church back when
-mathematicians were looking for an axiomatic foundation and algorithm where they
-could feed in an arbitrary statement written in some type of formal language to see
-if the statement was true or false.  While mathematicians were able to construct formal
-languages to encode these questions, they learned there are simply some questions that
-simply won't ever return a simple true or false.
-
-Nevertheless, I'm still absolutely enamoured by Church's lambda calculus because he was 
-able to create an incredibily powerful minimalist language that makes almost every modern
-programming language look incredibly complicated by comparison.  Why?  Because lamba
-calculus really only lets you do three things:
-
-
-
-That's it!  Really!
-
-Check this out:
+Let's try turning F# into lambda calculus!
 
 *)
 
+//  First, let's create a shortcut to the module that has all the active patterns 
+//  we're going to use to transform our quotations.
 
+module P = Microsoft.FSharp.Quotations.Patterns
 
-(*
-Here I'm defining the data types for our lambda calculus AST.  As you can see it's very
-minimalistic, but it's 
-
-If I wanted to define the ID function, I could encode it by defining a very simple lambda 
-function that accepts a single argument and returns it.  In F#, we'd write it like this:
-*)
-
-let id = fun x -> x
-
-(*
-With our little lambda calculus 
-*)
-
-let ID = Lambda("x", Var("x"))
+//  Next, let's write a small function to get us started by mapping the basic elements:
+let rec fromExpr = function
+    | P.Var(v)                              -> Term.Var(v.Name)
+    | P.Lambda(var, LTerm(expr))            -> Term.Lambda(var.Name, expr)
+    | P.Application(LTerm(ex1), LTerm(ex2)) -> Term.App(ex1, ex2)
+    | x -> failwithf "Don't know how to deal with %A" x
+and (|LTerm|) = fromExpr
 
 (*
 
-I don't know abou
+Here the mapping was pretty trivial.  We mapped F#'s variables, lambdas and function application
+to our simple lambda calculus.  For anything else, we throw an error.
 
 *)
 
-let rec termToFSharp = function
-    | Var(var)          -> sprintf "%s" var
-    | Lambda(var, body) -> sprintf "fun %s -> %s" var (termToFSharp body)
-    | App(func, arg)    -> sprintf "(%s %s)" (termToFSharp func) (termToFSharp arg)
+//  Let's try it out:
+let ID = fromExpr <@ fun x f -> f x @>
 
-let printTerm = termToFSharp >> printfn "%s"
-
-printTerm ID
-printTerm (Lambda("x", Lambda("y", App(Var("x"), App(Var("x"), Var("y"))))))
-
+printfn "%A" ID
 
 (*
 
-This is all we need to encode a lambda calculus function.  We have no notion of if 
-statements, boolean values, for loops, data types.
+Let's make it a little more interesting.
 
-However...  We can encode those things into this language here.
+From the Wikipedia page on Lambda Calculus, they show us how we can encode other things into
+lambda calculus.  For example, here's how we can encode numbers:
+
+0 := λf.λx.x
+1 := λf.λx.f x
+2 := λf.λx.f (f x)
+3 := λf.λx.f (f (f x))
+
+The pattern seems clear enough.  If we want to encode a positive integer, we'll wrap our body
+of our lambda function with another call to f.  Let's write a function that does this for us:
 
 *)
 
-open Microsoft.FSharp.Quotations
+let rec numToLambda n = Lambda("f", Lambda("x", (numBodyToLamda n))) 
+and numBodyToLamda = function
+    | 0 -> Var("x")
+    | n -> App(Var("f"), (numBodyToLamda (n - 1)))
+
+numToLambda 4 |> toFSharp |> printfn "%s"
+// PRINTS: (fun f x -> (f (f (f (f x)))))
 
 
-    open Microsoft.FSharp.Quotations.Patterns
-
-    let rec fromExpr = function
-        | Var(v)                              -> Term.Var(v.Name)
-        | Application(LTerm(ex1), LTerm(ex2)) -> Term.App(ex1, ex2)
-        | Lambda(var, LTerm(expr))            -> Term.Lambda(var.Name, expr)
-        | x -> failwithf "Don't know how to deal with %A" x
-    and (|LTerm|) = fromExpr
 
 type Term with
     member this.Call(t) = App(this, t)
-    static member Fn([<ReflectedDefinition>] f:Expr<'a>) = Term.fromExpr f
+    static member Fn([<ReflectedDefinition>] f:Expr<'a>) = fromExpr f
 
 open Term
 
