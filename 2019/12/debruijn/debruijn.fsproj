@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="fsAdvent/01-ast.fs" />
+    <Compile Include="fsAdvent/02-basic-formatting.fs" />
+    <Compile Include="fsAdvent/03-matching-specific-cases.fs" />
+    <Compile Include="fsAdvent/04-conditional-formatting.fs" />
+    <Compile Include="fsAdvent/05-active-patterns.fs" />
+    <Compile Include="fsAdvent/06-partial-active-patterns.fs" />
+    <Compile Include="fsAdvent/07-quotations.fs" />
+    <Compile Include="fsAdvent/08-converting-ints-to-lambdas.fs" />
+    <Compile Include="fsAdvent/09-lambda-arithmetic.fs" />
     <Compile Include="Parsers/Parsec.fs" />
     <Compile Include="Parsers/Lambda.fs" />
     <Compile Include="Lambda/Cantor.fs" />
