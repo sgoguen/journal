@@ -9,14 +9,9 @@ const Person = defineTable({
   },
 });
 
-const bob = Person.create({
-  name: "Bob Jones",
-  age: 21,
-});
-
 Deno.test("SQL", () => {
-  //   const sql = Person.sql.insert(bob);
-  const sql = Person.sql.insert({ name: "Bob", age: 12 });
+  const bob = { name: "Bob", age: 12 };
+  const sql = Person.sql.insert(bob);
   console.log({ bob, sql });
   assertEquals(2 + 2, 4);
 });
