@@ -1,4 +1,4 @@
-# How do we Dream Big - Together?
+# How do we Dream Big Together?
 
 As I sat down to write this, I started prefacing this post by trying to convince you that I am 
 not a dreamer and I'm a seasoned pro who's seen hype cycles come and go. I wanted to convince you
