@@ -1,21 +1,19 @@
-# How do we Dream Big Together?
+# I Need Your Help
 
-As I sat down to write this, I started prefacing this post by trying to convince you that I am 
-not a dreamer and I'm a seasoned pro who's seen hype cycles come and go. I wanted to convince you
-that I'm credible and worthy of your attention. I ended up writing a bunch of nonsense and deleting 
-it because I knew I wasn't getting to the point.
+I need your help. I usually don't know how to ask for people's help, but I really want 
+your help. I spent a lot of my career relying on myself and not asking people for 
+help, but I know that I can't possibly do the things I think should be done alone.
 
-In the cutting words of Frankie Bergstein, "Fuck that noise!"
+I am all too aware of my limitations.
 
-I'll cut through the bullshit.  Here's my thesis:
+I'm reaching out to you because I think what I'm trying to do is hard. More importantly,
+I think you have a good heart and you care about things bigger than yourself. The world
+needs people like you, to get regularly get together with other people for some benevolant
+purpose.
 
-## I Need Your Help
+I'm also reaching out because I think have adopted some kind of meaning. 
 
-I'm not good at saying those words. To be honest, the first 10 years of my career weren't very 
-collaborative. Most of my bosses gave me an incredible amount of leeway to call the shots, so I 
-often had the pleasure of living with my mistakes or fixing them.
-
-Then I finally got a boss who really engaged me.
+## My Proposal
 
 We hit it off right away and when I started working with him I would stop by his office almost 
 every day.  If I didn't, he would often call me over and he'd have a question for me, some idea for 
