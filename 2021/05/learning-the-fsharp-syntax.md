@@ -42,3 +42,28 @@ export function addOne(x_1) {
     return x_1 + 1;
 }
 ```
+  
+# Notes About Examples
+  
+```fsharp
+let addOne x = x + 1
+```
+
+* It's a simple one-line function
+* It automatically infers the input and return type
+* We say that functions map from one type (int) to another type (int)
+* Function signatures usually tell us what functions do
+* The types usually tell us how to use something
+* Expressions compute values - Statements perform actions
+* F# nudges you to think about your problem in terms of computing values
+  
+```fsharp
+let addOne x = x.ToString() + "1"
+``
+  
+* All types support the ToSting() method in F#
+* This makes it hard for F# to infer a type
+* So F# will automatically make this function generic for all types.
+* This is called Automatic generalization
+
+  
