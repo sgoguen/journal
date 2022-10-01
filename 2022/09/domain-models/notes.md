@@ -60,7 +60,12 @@ the money can buy.
 
 Even with gold and silver, the point of acquiring gold and silver is to use it to buy goods and services, either in the near
 future or at some point in the future.  Because money is such a ubiquitous focal point of our lives, it's easy to forget that
-it is ONE tool serving a larger purpose, and not the purpose itself.
+it is ONE tool serving a larger purpose, and not the purpose itself.  I know we know this, but I can't stress enough how easy it 
+is to forget it in our day-to-day.  Our money is so liquid, everytime we try to tell our brain that it's not the point, our brains 
+reflexively dismiss the idea as hippie nonsense because even if the notion is true, the idea doesn't actually seem to serve us in most
+practical situations.  
+
+And your brain is right.
 
 Here's another way of looking at gold and silver:  They are implicit IOUs.  Nobody has actually sworn on a stack of bibles that
 they will exchange gold and silver for goods and services and there is no central authority forces people to accept gold and silver.
@@ -131,11 +136,14 @@ to hack and forge.
 
 
 
+-----
+
+
+# Incomplete Sentences, Ideas and Unincorporated Notes
 
 
 
-
-When you look at it from that perspective, you can see how the traders in China were able to rationalize 
+When you look at it from that perspective, you can see how the traders in China were able to rationalize...
 
 
 
@@ -152,4 +160,22 @@ reputation and trust.  In order to make a system like this work, you need some f
 
 * You have to know the people involved in the system and their reputation must follow them in a way that benefits them when
 they do the right thing and punishes them when they do the wrong thing.
+
+## Crypto is All a Giant Scam
+
+https://twitter.com/smdiehl/status/1576223644623441920
+
+"Crypto is all a giant scam. The fact that we're still searching for a use case beyond naked speculation after 13 years is beyond farce. The tech is rotten. The economics is rotten. The politics is rotten. The whole crypto idea is rotten to the core."
+
+### Reflective Questions
+
+* How is it rotten to the core?
+* Is crypto antifragile, resilient, or is it resilient up to a certain threshold and result in catastrophic failure?
+* What are the mechanisms (technical / human) that make current crypto schemes rotten?
+* How does it contrast early money?
+* How do those principles contrast with the virtues of people providing credit to other people?
+  * Small businesses providing credit have skin in the game to ensure the credit notes they issue retain their value.
+  * Reputation and honor are practical virtues, not a cosmetic ideas to showcase socially or politically. 
+  * There is no singular monitary policy, so the concepts of inflation/deflation become hyperlocal and much more volatile.
+
 
