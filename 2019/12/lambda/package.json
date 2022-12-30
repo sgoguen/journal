@@ -17,6 +17,6 @@
     "fable-splitter": "^2.1.11"
   },
   "devDependencies": {
-    "mocha": "^6.2.2"
+    "mocha": "^10.2.0"
   }
 }
